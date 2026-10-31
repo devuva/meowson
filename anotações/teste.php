@@ -1,5 +1,5 @@
 <?php
-class Gato {
+/*class Gato {
     private string $nome;
     private int $idade;
 
@@ -34,6 +34,9 @@ $gatos = [$gato1, $gato2];
 
 foreach ($gatos as $gato) {
     echo "Nome: " . $gato->getNome() . " - Idade: " . $gato->getIdade() . " meses - " . $gato->classificarIdade() . "<br>";
-}
+}*/
+
+$hash = password_hash("password", PASSWORD_DEFAULT);
+echo $hash;
 
 ?>
