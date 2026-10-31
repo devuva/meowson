@@ -7,8 +7,6 @@ public function __construct(PDO $pdo) {
     $this->pdo = $pdo;
 }
 
-
-
 public function cadastrar(array $dados) {
 
 if ($dados['perfil'] === 'ong') {
@@ -27,6 +25,12 @@ $comando = $this->pdo->prepare(
 );
     return $comando->execute([$dados['nome'], $dados['cpf_cnpj'], $dados['numero'], $dados['cep'], $dados['logradouro'], $dados['bairro'],
     $dados['cidade'], $dados['estado'], $dados['perfil'], $dados['email'], $hash, $dados['telefone'], $situacao]);
+}
+
+public function buscarPorEmail(string $email) {
+    $comando = $this->pdo->prepare("SELECT * FROM usuario WHERE email = ?");
+    $comando->execute([$email]);
+    return $comando->fetch(PDO::FETCH_ASSOC);
 }
 }
 ?>
