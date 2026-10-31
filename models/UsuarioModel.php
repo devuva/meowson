@@ -9,7 +9,7 @@ public function __construct(PDO $pdo) {
 
 public function cadastrar(array $dados) {
 
-$hash = password_hash($dados['senha_hash'], PASSWORD_DEFAULT);
+$hash = password_hash($dados['senha'], PASSWORD_DEFAULT);
 
 $comando = $this->pdo->prepare(
     "INSERT INTO usuario (nome, cpf_cnpj, numero, cep, logradouro, bairro, cidade, estado, perfil, email, senha_hash, telefone)
