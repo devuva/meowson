@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<title>Cadastro - Meowson</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<form method="post" enctype="multipart/form-data" action="">
+    <label for="nome">Nome</label>
+    <input maxlength="150" id="nome" name="nome" required autocomplete="name">
+
+    <label for="email">E-mail</label>
+    <input maxlength="150" type="email" id="email" name="email" required autocomplete="email">
+
+    <label for="telefone">Telefone</label>
+    <input maxlength="15" type="tel" id="telefone" name="telefone" required autocomplete="tel">
+
+    <label for="senha">Senha</label>
+    <input minlength="8" maxlength="72" type="password" id="senha" name="senha" required autocomplete="new-password">
+    
+    <label for="confirmarSenha">Confirmar senha</label>
+    <input minlength="8" maxlength="72" type="password" id="confirmarSenha" name="confirmarSenha" required autocomplete="new-password">
+
+    <label for="cpf">CPF</label>
+    <input maxlength="14" id="cpf" name="cpf" required inputmode="numeric">
+
+    <label for="perfil">Perfil</label>
+    <select name="perfil" id="perfil" required>
+        <option selected value="">Selecione um perfil</option>
+        <option value="adotante">Adotante</option>
+        <option value="protetor">Protetor</option>
+        <option value="ong">ONG</option>
+    </select>
+
+<fieldset>
+    <legend>Endereço</legend>
+
+    <label for="cep">CEP</label>
+    <input maxlength="9" id="cep" name="cep" required inputmode="numeric" autocomplete="postal-code">
+
+    <label for="logradouro">Logradouro</label>
+    <input maxlength="100" id="logradouro" name="logradouro" required autocomplete="address-line1">
+
+    <label for="numero">Número</label>
+    <input maxlength="10" id="numero" name="numero" required>
+
+    <label for="bairro">Bairro</label>
+    <input maxlength="50" id="bairro" name="bairro" required>
+
+    <label for="cidade">Cidade</label>
+    <input maxlength="50" id="cidade" name="cidade" required autocomplete="address-level2">
+
+    <label for="estado">Estado</label>
+    <select id="estado" name="estado" required>
+        <option value="">Selecione um estado</option>
+        <option value="AC">Acre</option>
+        <option value="AL">Alagoas</option>
+        <option value="AP">Amapá</option>
+        <option value="AM">Amazonas</option>
+        <option value="BA">Bahia</option>
+        <option value="CE">Ceará</option>
+        <option value="DF">Distrito Federal</option>
+        <option value="ES">Espírito Santo</option>
+        <option value="GO">Goiás</option>
+        <option value="MA">Maranhão</option>
+        <option value="MT">Mato Grosso</option>
+        <option value="MS">Mato Grosso do Sul</option>
+        <option value="MG">Minas Gerais</option>
+        <option value="PA">Pará</option>
+        <option value="PB">Paraíba</option>
+        <option value="PR">Paraná</option>
+        <option value="PE">Pernambuco</option>
+        <option value="PI">Piauí</option>
+        <option value="RJ">Rio de Janeiro</option>
+        <option value="RN">Rio Grande do Norte</option>
+        <option value="RS">Rio Grande do Sul</option>
+        <option value="RO">Rondônia</option>
+        <option value="RR">Roraima</option>
+        <option value="SC">Santa Catarina</option>
+        <option value="SP">São Paulo</option>
+        <option value="SE">Sergipe</option>
+        <option value="TO">Tocantins</option>
+    </select>
+
+    <label for="complemento">Complemento</label>
+    <input maxlength="50" id="complemento" name="complemento">
+</fieldset>
+
+    <div id="bloco-documento" hidden>
+        <label for="documento">Documentação da ONG</label>
+        <input type="file" id="documento" name="documento">
+    </div>
+
+    <button type="submit" id="botao">Enviar</button>
+</form>
+</body>
+</html>
