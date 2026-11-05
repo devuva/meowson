@@ -7,25 +7,49 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+<header class="barra">
+    <a href="index.html">Meowson</a>
+    <nav aria-label="Principal">
+        <a href="cadastro.html">Cadastro</a>
+        <a href="login.html">Login</a>
+    </nav>
+</header>
+
+<div class="container">
+
 <form method="post" enctype="multipart/form-data" action="">
+    <div class="campo">
     <label for="nome">Nome</label>
     <input maxlength="150" id="nome" name="nome" required autocomplete="name">
+    </div>
 
+    <div class="campo">
     <label for="email">E-mail</label>
     <input maxlength="150" type="email" id="email" name="email" required autocomplete="email">
+    </div>
 
+    <div class="campo">
     <label for="telefone">Telefone</label>
     <input maxlength="15" type="tel" id="telefone" name="telefone" required autocomplete="tel">
-
+    </div>
+    
+    <div class="campo">
     <label for="senha">Senha</label>
     <input minlength="8" maxlength="72" type="password" id="senha" name="senha" required autocomplete="new-password">
-    
+    </div>
+
+    <div class="campo">
     <label for="confirmarSenha">Confirmar senha</label>
     <input minlength="8" maxlength="72" type="password" id="confirmarSenha" name="confirmarSenha" required autocomplete="new-password">
+    </div>
 
+    <div class="campo">
     <label for="cpf">CPF</label>
     <input maxlength="14" id="cpf" name="cpf" required inputmode="numeric">
+    </div>
 
+    <div class="campo">
     <label for="perfil">Perfil</label>
     <select name="perfil" id="perfil" required>
         <option selected value="">Selecione um perfil</option>
@@ -33,25 +57,37 @@
         <option value="protetor">Protetor</option>
         <option value="ong">ONG</option>
     </select>
+    </div>
 
 <fieldset>
     <legend>Endereço</legend>
 
+    <div class="campo">
     <label for="cep">CEP</label>
     <input maxlength="9" id="cep" name="cep" required inputmode="numeric" autocomplete="postal-code">
+    </div>
 
+    <div class="campo">
     <label for="logradouro">Logradouro</label>
     <input maxlength="100" id="logradouro" name="logradouro" required autocomplete="address-line1">
+    </div>
 
+    <div class="campo">
     <label for="numero">Número</label>
     <input maxlength="10" id="numero" name="numero" required>
+    </div>
 
+    <div class="campo">
     <label for="bairro">Bairro</label>
     <input maxlength="50" id="bairro" name="bairro" required>
+    </div>
 
+    <div class="campo">
     <label for="cidade">Cidade</label>
     <input maxlength="50" id="cidade" name="cidade" required autocomplete="address-level2">
+    </div>
 
+    <div class="campo">
     <label for="estado">Estado</label>
     <select id="estado" name="estado" required>
         <option value="">Selecione um estado</option>
@@ -83,17 +119,23 @@
         <option value="SE">Sergipe</option>
         <option value="TO">Tocantins</option>
     </select>
+    </div>
 
+    <div class="campo">
     <label for="complemento">Complemento</label>
     <input maxlength="50" id="complemento" name="complemento">
+    </div>
 </fieldset>
 
     <div id="bloco-documento" hidden>
+        <div class="campo">
         <label for="documento">Documentação da ONG</label>
         <input type="file" id="documento" name="documento">
+        </div>
     </div>
 
     <button type="submit" id="botao">Enviar</button>
 </form>
+</div>
 </body>
 </html>

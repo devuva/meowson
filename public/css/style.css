@@ -27,3 +27,47 @@ body {
     font-size: 1rem;
     font-family:Georgia, 'Times New Roman', Times, serif;
 }
+
+.barra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header {
+    background-color: var(--cor-principal);
+    padding: 1rem;
+}
+
+nav {
+    display: flex;
+    gap: 2rem;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+}
+
+header a:focus {
+    outline: 3px solid white;
+    outline-offset: 2px;
+}
+
+.container {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+}
