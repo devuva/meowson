@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+}
+
+
+input:focus, 
+select:focus, 
+button:focus {
+    outline: 3px solid var(--cor-principal);
+    outline-offset: 2px;
+}
+
+:root {
+    --cor-principal: #8E44AD;
+    --cor-titulo: #222222;
+    --cor-texto: #222222;
+    --cor-fundo: #C7C7C7;
+}
+
+h1 {
+    color: var(--cor-titulo);
+}
+
+body {
+    color: var(--cor-texto);
+    background-color: var(--cor-fundo);
+    font-size: 1rem;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
