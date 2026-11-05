@@ -15,6 +15,7 @@ button:focus {
     --cor-titulo: #222222;
     --cor-texto: #222222;
     --cor-fundo: #C7C7C7;
+    --cor-principal-escura: #732992;
 }
 
 h1 {
@@ -70,4 +71,18 @@ header a:focus {
 .campo input,
 .campo select {
     width: 100%;
+}
+
+.botao {
+    border: 2px solid black;
+    background-color: var(--cor-principal);
+    color: white;
+    padding: 0.75rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.botao:hover {
+    background-color: var(--cor-principal-escura);
 }

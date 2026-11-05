@@ -18,7 +18,7 @@
 
 <div class="container">
 
-<form method="post" enctype="multipart/form-data" action="">
+<form method="post" enctype="multipart/form-data" action="cadastrar.php">
     <div class="campo">
     <label for="nome">Nome</label>
     <input maxlength="150" id="nome" name="nome" required autocomplete="name">
@@ -46,7 +46,7 @@
 
     <div class="campo">
     <label for="cpf">CPF</label>
-    <input maxlength="14" id="cpf" name="cpf" required inputmode="numeric">
+    <input maxlength="14" id="cpf" name="cpf_cnpj" required inputmode="numeric">
     </div>
 
     <div class="campo">
@@ -134,7 +134,7 @@
         </div>
     </div>
 
-    <button type="submit" id="botao">Enviar</button>
+    <button type="submit" id="botao" class="botao">Enviar</button>
 </form>
 </div>
 </body>
