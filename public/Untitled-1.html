@@ -1,0 +1,42 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<style>
+.btn {
+  position: relative;
+  overflow: hidden;
+  padding: 12px 28px;
+  font-size: 16px;
+  color: #6c5ce7;
+  background: transparent;
+  border: 2px solid #6c5ce7;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1;
+  transition: color 0.4s ease;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #6c5ce7;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+  z-index: -1;
+}
+
+.btn:hover {
+  color: #fff;
+}
+
+.btn:hover::before {
+  transform: scaleX(1);
+}
+</style>
+</head>
+<body>
+<button class="btn">Passe o mouse</button>
+</body>
+</html>

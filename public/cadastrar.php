@@ -47,6 +47,18 @@ if (!filter_var($dados['email'], FILTER_VALIDATE_EMAIL)) {
     $erros[] = "Insira um e-mail válido!";
 }
 
+if (strlen($dados['estado']) != 2) {
+    $erros[] = "O estado é formado por uma sigla de 2 letras!";
+}
+
+$endereco = ['nome', 'numero', 'logradouro', 'bairro', 'cidade'];
+
+foreach ($endereco as $campo) {
+    if(trim($dados[$campo]) === '') {
+        $erros[] = "Preencha o campo $campo";
+    }
+}
+
 if (!empty($erros)) {
     foreach ($erros as $erro) {
         echo $erro . "<br>";
@@ -55,17 +67,17 @@ if (!empty($erros)) {
 
 else {
 
-try {
-    $model->cadastrar($dados);
-    echo "Salvo!";
-    } catch (PDOEXCEPTION $e) {
-    if ($e->errorInfo[1] === 1062) {
-        echo "E-mail ou CPF/CNPJ já cadastrado!";
-    }
+    try {
+        $model->cadastrar($dados);
+        echo "Salvo!";
+        } catch (PDOEXCEPTION $e) {
+        if ($e->errorInfo[1] === 1062) {
+            echo "E-mail ou CPF/CNPJ já cadastrado!";
+        }
 
-    else {
-        echo "Erro ao salvar. Tente novamente.";
+        else {
+            echo "Erro ao salvar. Tente novamente.";
+        }
     }
-}
 }
 ?>
