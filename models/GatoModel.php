@@ -12,14 +12,37 @@ class GatoModel {
         return $comando->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function cadastrar(array $dados) {
+    public function cadastrar(array $dados, array $fotos = []) {
 
     $comando = $this->pdo->prepare(
         "INSERT INTO gatos (nome, raca, idade, sexo, descricao, observacoes, vacinas, doencas, usuario_id)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
     );
-    return $comando->execute([$dados['nome'], $dados['raca'], $dados['idade'], $dados['sexo'],
+    $ok = $comando->execute([$dados['nome'], $dados['raca'], $dados['idade'], $dados['sexo'],
     $dados['descricao'], $dados['observacoes'], $dados['vacinas'], $dados['doencas'], $_SESSION['usuario_id']]);
+
+    if (!$ok) {
+        return false;
+    }
+
+    $gatoId = (int) $this->pdo->lastInsertId();
+
+    if ($gatoId === 0) {
+        return false;
+    }
+
+    if (!empty($fotos)) {
+    $comandoFoto = $this->pdo->prepare(
+        "INSERT INTO fotos_gato (gato_id, arquivo)
+        values (?, ?)"
+        );
+
+    foreach ($fotos as $arquivo) {
+        $comandoFoto->execute([$gatoId, $arquivo]);
+    }
+}
+
+    return $gatoId;
 }
 }
 
