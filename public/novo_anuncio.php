@@ -1,3 +1,9 @@
+<?php
+session_start();
+require_once __DIR__ . "/../config/auth.php";
+exigirPerfil(['protetor', 'ong']);
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
