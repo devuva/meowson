@@ -1,0 +1,88 @@
+* {
+    box-sizing: border-box;
+}
+
+
+input:focus, 
+select:focus, 
+button:focus {
+    outline: 3px solid var(--cor-principal);
+    outline-offset: 2px;
+}
+
+:root {
+    --cor-principal: #8E44AD;
+    --cor-titulo: #222222;
+    --cor-texto: #222222;
+    --cor-fundo: #C7C7C7;
+    --cor-principal-escura: #732992;
+}
+
+h1 {
+    color: var(--cor-titulo);
+}
+
+body {
+    color: var(--cor-texto);
+    background-color: var(--cor-fundo);
+    font-size: 1rem;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+.barra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header {
+    background-color: var(--cor-principal);
+    padding: 1rem;
+}
+
+nav {
+    display: flex;
+    gap: 2rem;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+}
+
+header a:focus {
+    outline: 3px solid white;
+    outline-offset: 2px;
+}
+
+.container {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+}
+
+.botao {
+    border: 2px solid black;
+    background-color: var(--cor-principal);
+    color: white;
+    padding: 0.75rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.botao:hover {
+    background-color: var(--cor-principal-escura);
+}

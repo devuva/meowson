@@ -1,0 +1,13 @@
+<?php
+$user = "root";
+$pass = "";
+$pdo = new PDO('mysql:host=localhost;dbname=meowson;charset=utf8mb4', $user, $pass);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$comando = $pdo->prepare('SELECT * from gatos');
+$comando->execute();
+$lista = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+foreach ($lista as $gato) {
+    echo $gato['nome'] . "<br>";
+}
+?>

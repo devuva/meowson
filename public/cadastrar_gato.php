@@ -45,7 +45,13 @@ if (move_uploaded_file($temp, $pasta . "/" . $nome_final)) {
 }
 }
 
+if (empty($fotos)) {
+    echo "Envie pelo menos uma foto válida!";
+}
+
+else {
 $model->cadastrar($dados, $fotos);
 echo "Salvo!";
+}
 }
 ?>
