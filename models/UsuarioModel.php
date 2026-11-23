@@ -79,5 +79,16 @@ public function buscarPorId(int $id): array|false {
         $comando = $this->pdo->prepare("DELETE FROM usuario WHERE id = ?");
         return $comando->execute([$id]);
     }
+
+    public function listarOngsPendentes(): array {
+        $comando = $this->pdo->prepare(
+            "SELECT id, nome, cpf_cnpj, email, telefone, cidade, estado
+             FROM usuario
+             WHERE perfil = 'ong' AND situacao_cadastro = 'pendente'
+             ORDER BY id ASC"
+        );
+        $comando->execute();
+        return $comando->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

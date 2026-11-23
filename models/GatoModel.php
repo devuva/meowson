@@ -119,6 +119,25 @@ public function atualizar(int $id, int $usuario_id, array $dados) {
 
         return $gato;
     }
+
+    public function listarPendentesAdmin(): array {
+        $comando = $this->pdo->prepare(
+            "SELECT g.*, u.nome AS nome_doador, u.perfil AS perfil_doador
+             FROM gatos g
+             INNER JOIN usuario u ON g.usuario_id = u.id
+             WHERE g.status = 'em_analise'
+             ORDER BY g.id ASC"
+        );
+        $comando->execute();
+        return $comando->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function moderarAnuncio(int $id, string $status, ?string $motivoRecusa = null): bool {
+        $comando = $this->pdo->prepare(
+            "UPDATE gatos SET status = ?, motivo_recusa = ? WHERE id = ?"
+        );
+        return $comando->execute([$status, $motivoRecusa, $id]);
+    }
 }
 
 ?>
