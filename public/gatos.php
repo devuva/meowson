@@ -83,6 +83,6 @@ $gatos = $model->listarPublico($filtros);
         </div>
     <?php endif; ?>
 </div>
-
+<script src="js/app.js"></script>
 </body>
 </html>

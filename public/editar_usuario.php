@@ -111,4 +111,5 @@ if (!$usuario) {
 </form>
 </div>
 </body>
+<script src="js/app.js"></script>
 </html>
