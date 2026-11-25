@@ -26,16 +26,30 @@ $gatos = $model->listarPublico($filtros);
 <body>
 
 <header class="barra">
-    <a href="index.html">Meowson</a>
+    <a href="gatos.php">Meowson</a>
     <nav aria-label="Principal">
         <a href="gatos.php">Adotar</a>
-        <a href="cadastro.html">Cadastro</a>
-        <a href="login.html">Login</a>
+        <?php if (!isset($_SESSION['usuario_id'])): ?>
+            <a href="cadastro.html">Cadastro</a>
+            <a href="login.html">Login</a>
+        <?php else: ?>
+            <?php $perfil = $_SESSION['perfil'] ?? ''; ?>
+            <?php if ($perfil === 'adotante'): ?>
+                <a href="minhas_solicitacoes.php">Minhas Solicitações</a>
+            <?php elseif ($perfil === 'ong' || $perfil === 'protetor'): ?>
+                <a href="meus_anuncios.php">Meus Anúncios</a>
+                <a href="gerenciar_solicitacoes.php">Solicitações</a>
+            <?php elseif ($perfil === 'admin'): ?>
+                <a href="moderacao_admin.php">Moderação</a>
+                <a href="gerenciar_usuarios.php">Usuários</a>
+            <?php endif; ?>
+            <a href="logout.php">Sair</a>
+        <?php endif; ?>
     </nav>
 </header>
 
 <div class="container">
-    <h1>Gatos Disponíveis para Adoção</h1>
+    <h1>Encontre seu gato</h1>
 
     <form method="get" action="gatos.php" class="filtros">
         <div class="campo">
@@ -68,11 +82,21 @@ $gatos = $model->listarPublico($filtros);
                 <div class="campo card-gato">
                     <?php if (!empty($g['foto'])): ?>
                         <img src="uploads/<?= htmlspecialchars($g['foto']) ?>" alt="Foto de <?= htmlspecialchars($g['nome']) ?>">
+                    <?php else: ?>
+                        <div class="sem-foto" aria-label="Sem foto cadastrada"></div>
                     <?php endif; ?>
 
-                    <h2><?= htmlspecialchars($g['nome']) ?></h2>
-                    <p>Raça: <?= htmlspecialchars($g['raca'] ?? 'SRD') ?> | Sexo: <?= htmlspecialchars($g['sexo']) ?> | Idade: <?= (int) $g['idade'] ?> meses</p>
-                    <p>Local: <?= htmlspecialchars($g['cidade']) ?> - <?= htmlspecialchars($g['estado']) ?></p>
+                    <div class="card-topo">
+                        <h2><?= htmlspecialchars($g['nome']) ?></h2>
+                        <?php if ($g['sexo'] === 'F'): ?>
+                            <span class="simbolo-sexo femea" title="Fêmea" aria-label="Fêmea">&#9792;</span>
+                        <?php else: ?>
+                            <span class="simbolo-sexo macho" title="Macho" aria-label="Macho">&#9794;</span>
+                        <?php endif; ?>
+                    </div>
+
+                    <p class="card-info"><?= htmlspecialchars($g['raca'] ?? 'SRD') ?> • <?= (int) $g['idade'] ?> meses</p>
+                    <p class="card-info"><?= htmlspecialchars($g['cidade']) ?> - <?= htmlspecialchars($g['estado']) ?></p>
 
                     <form method="get" action="detalhes_gato.php">
                         <input type="hidden" name="id" value="<?= (int) $g['id'] ?>">

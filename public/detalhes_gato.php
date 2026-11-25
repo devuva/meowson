@@ -26,10 +26,25 @@ if (!$gato) {
 <body>
 
 <header class="barra">
-    <a href="index.html">Meowson</a>
+    <a href="gatos.php">Meowson</a>
     <nav aria-label="Principal">
-        <a href="gatos.php">Voltar para lista</a>
-        <a href="login.html">Login</a>
+        <a href="gatos.php">Adotar</a>
+        <?php if (!isset($_SESSION['usuario_id'])): ?>
+            <a href="cadastro.html">Cadastro</a>
+            <a href="login.html">Login</a>
+        <?php else: ?>
+            <?php $perfil = $_SESSION['perfil'] ?? ''; ?>
+            <?php if ($perfil === 'adotante'): ?>
+                <a href="minhas_solicitacoes.php">Minhas Solicitações</a>
+            <?php elseif ($perfil === 'ong' || $perfil === 'protetor'): ?>
+                <a href="meus_anuncios.php">Meus Anúncios</a>
+                <a href="gerenciar_solicitacoes.php">Solicitações</a>
+            <?php elseif ($perfil === 'admin'): ?>
+                <a href="moderacao_admin.php">Moderação</a>
+                <a href="gerenciar_usuarios.php">Usuários</a>
+            <?php endif; ?>
+            <a href="logout.php">Sair</a>
+        <?php endif; ?>
     </nav>
 </header>
 
