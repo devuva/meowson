@@ -40,17 +40,11 @@ $ongsPendentes = $usuarioModel->listarOngsPendentes();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 </head>
 <body>
 
-<header class="barra">
-    <a href="index.html">Meowson</a>
-    <nav aria-label="Principal">
-        <a href="moderacao_admin.php">Moderação</a>
-        <a href="gerenciar_usuarios.php">Usuários</a>
-        <a href="logout.php">Sair</a>
-    </nav>
-</header>
+<?php require_once __DIR__ . "/../includes/header.php"; ?>
 
 <div class="container">
     <h1>Moderação do Administrador</h1>

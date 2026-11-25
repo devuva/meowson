@@ -25,17 +25,11 @@ $solicitacoes = $model->listarPorAdotante((int) $_SESSION['usuario_id']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 </head>
 <body>
 
-<header class="barra">
-    <a href="index.html">Meowson</a>
-    <nav aria-label="Principal">
-        <a href="gatos.php">Adotar</a>
-        <a href="minhas_solicitacoes.php">Minhas Solicitações</a>
-        <a href="logout.php">Sair</a>
-    </nav>
-</header>
+<?php require_once __DIR__ . "/../includes/header.php"; ?>
 
 <div class="container">
     <h1>Minhas Solicitações de Adoção</h1>

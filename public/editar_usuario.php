@@ -29,16 +29,11 @@ if (!$usuario) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 </head>
 <body>
 
-<header class="barra">
-    <a href="index.html">Meowson</a>
-    <nav aria-label="Principal">
-        <a href="cadastro.html">Cadastro</a>
-        <a href="login.html">Login</a>
-    </nav>
-</header>
+<?php require_once __DIR__ . "/../includes/header.php"; ?>
 
 <div class="container">
 <form method="post" action="atualizar_usuario.php">

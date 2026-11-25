@@ -9,10 +9,10 @@ $model = new GatoModel($pdo);
 
 $id = (int) ($_GET['id'] ?? 0);
 $gato = $model->buscarPorId($id, $_SESSION['usuario_id']);
-/*if (!$gato) {
+if (!$gato) {
     header("Location: meus_anuncios.php");
     exit;
-} */
+} 
 ?>
 
 <!DOCTYPE html>
@@ -22,16 +22,11 @@ $gato = $model->buscarPorId($id, $_SESSION['usuario_id']);
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 </head>
 <body>
-
-<header class="barra">
-    <a href="index.html">Meowson</a>
-    <nav aria-label="Principal">
-        <a href="cadastro.html">Cadastro</a>
-        <a href="login.html">Login</a>
-    </nav>
-</header>
+    
+<?php require_once __DIR__ . "/../includes/header.php"; ?>
 
 <div class="container">
 <form method="post" action="atualizar_gato.php">

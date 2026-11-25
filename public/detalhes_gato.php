@@ -22,31 +22,12 @@ if (!$gato) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 </head>
 <body>
 
-<header class="barra">
-    <a href="gatos.php">Meowson</a>
-    <nav aria-label="Principal">
-        <a href="gatos.php">Adotar</a>
-        <?php if (!isset($_SESSION['usuario_id'])): ?>
-            <a href="cadastro.html">Cadastro</a>
-            <a href="login.html">Login</a>
-        <?php else: ?>
-            <?php $perfil = $_SESSION['perfil'] ?? ''; ?>
-            <?php if ($perfil === 'adotante'): ?>
-                <a href="minhas_solicitacoes.php">Minhas Solicitações</a>
-            <?php elseif ($perfil === 'ong' || $perfil === 'protetor'): ?>
-                <a href="meus_anuncios.php">Meus Anúncios</a>
-                <a href="gerenciar_solicitacoes.php">Solicitações</a>
-            <?php elseif ($perfil === 'admin'): ?>
-                <a href="moderacao_admin.php">Moderação</a>
-                <a href="gerenciar_usuarios.php">Usuários</a>
-            <?php endif; ?>
-            <a href="logout.php">Sair</a>
-        <?php endif; ?>
-    </nav>
-</header>
+<?php require_once __DIR__ . "/../includes/header.php"; ?>
 
 <div class="container">
     <h1><?= htmlspecialchars($gato['nome']) ?></h1>
