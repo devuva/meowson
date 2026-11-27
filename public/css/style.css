@@ -536,3 +536,11 @@ footer.rodape-curiosidade {
     padding: 0.75rem 1.5rem;
     margin-top: auto;
 }
+
+.btn-inline {
+    display: inline-block;
+    width: auto;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.875rem;
+    margin-left: 0.5rem;
+}

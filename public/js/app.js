@@ -58,13 +58,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!containerGatos) return;
 
     const statusEl = document.getElementById("status-carregamento");
+    const statusLocEl = document.getElementById("status-localizacao");
     const inputBusca = document.getElementById("filtro-busca");
     const selectSexo = document.getElementById("filtro-sexo");
     const inputIdade = document.getElementById("filtro-idade");
     const checkFavoritos = document.getElementById("filtro-favoritos");
+    const btnLocalizacao = document.getElementById("btn-localizacao");
 
     let todosGatos = [];
     let favoritos = JSON.parse(localStorage.getItem("meowson_favoritos")) || [];
+    let cidadeUsuario = "";
+    let filtrarPorCidade = false;
+
+    function normalizarTexto(texto) {
+        return (texto || "")
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+    }
 
     function salvarFavoritos() {
         localStorage.setItem("meowson_favoritos", JSON.stringify(favoritos));
@@ -86,7 +98,76 @@ document.addEventListener("DOMContentLoaded", () => {
         if (selectSexo) selectSexo.value = "";
         if (inputIdade) inputIdade.value = "";
         if (checkFavoritos) checkFavoritos.checked = false;
+        filtrarPorCidade = false;
+        atualizarBannerLocalizacao();
         aplicarFiltros();
+    }
+
+    function atualizarBannerLocalizacao() {
+        if (!statusLocEl || !btnLocalizacao) return;
+
+        if (filtrarPorCidade && cidadeUsuario) {
+            statusLocEl.innerHTML = `Mostrando gatinhos em <strong>${cidadeUsuario}</strong>. <button type="button" class="botao btn-inline" id="btn-todas-cidades">Ver todas as cidades</button>`;
+            btnLocalizacao.textContent = `📍 ${cidadeUsuario}`;
+            document.getElementById("btn-todas-cidades")?.addEventListener("click", () => {
+                filtrarPorCidade = false;
+                atualizarBannerLocalizacao();
+                aplicarFiltros();
+            });
+        } else if (cidadeUsuario) {
+            statusLocEl.textContent = "Exibindo gatinhos de todas as cidades.";
+            btnLocalizacao.textContent = `📍 Filtrar: ${cidadeUsuario}`;
+        } else {
+            statusLocEl.textContent = "";
+            btnLocalizacao.textContent = "📍 Minha cidade";
+        }
+    }
+
+    function detectarCidadeUsuario(silencioso = false) {
+        if (!("geolocation" in navigator)) {
+            if (!silencioso && statusLocEl) {
+                statusLocEl.textContent = "Seu navegador não suporta geolocalização.";
+            }
+            return;
+        }
+
+        if (statusLocEl) {
+            statusLocEl.textContent = "Detectando sua cidade...";
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            async (posicao) => {
+                const { latitude, longitude } = posicao.coords;
+                try {
+                    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=pt`;
+                    const res = await fetch(url);
+                    const dados = await res.json();
+                    const cidadeDetectada = dados.city || dados.locality || "";
+
+                    if (cidadeDetectada) {
+                        cidadeUsuario = cidadeDetectada;
+                        filtrarPorCidade = true;
+                        atualizarBannerLocalizacao();
+                        aplicarFiltros();
+                    } else if (statusLocEl) {
+                        statusLocEl.textContent = "Não foi possível identificar sua cidade.";
+                    }
+                } catch (erro) {
+                    console.error("Erro na geocodificação reversa:", erro);
+                    if (statusLocEl) statusLocEl.textContent = "";
+                }
+            },
+            () => {
+                filtrarPorCidade = false;
+                if (statusLocEl) {
+                    statusLocEl.textContent = silencioso
+                        ? ""
+                        : "Permissão de localização negada. Exibindo todas as cidades.";
+                }
+                aplicarFiltros();
+            },
+            { timeout: 8000 }
+        );
     }
 
     function renderizarGatos(lista) {
@@ -95,13 +176,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 (inputBusca?.value || "").trim() ||
                 (selectSexo?.value || "") ||
                 (inputIdade?.value || "") ||
-                checkFavoritos?.checked
+                checkFavoritos?.checked ||
+                filtrarPorCidade
             );
 
             containerGatos.innerHTML = temFiltroAtivo
                 ? `<div class="estado-vazio">
-                       <p>Nenhum gatinho encontrado com esses filtros.</p>
-                       <button type="button" class="botao" id="btn-limpar-filtros">Limpar filtros</button>
+                       <p>Nenhum gatinho encontrado${filtrarPorCidade && cidadeUsuario ? ` em ${cidadeUsuario}` : " com esses filtros"}.</p>
+                       <button type="button" class="botao" id="btn-limpar-filtros">Ver todos os gatinhos</button>
                    </div>`
                 : `<div class="estado-vazio">
                        <p>Ainda não há gatinhos disponíveis para adoção no momento.</p>
@@ -146,22 +228,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function aplicarFiltros() {
-        const termo = (inputBusca?.value || "").toLowerCase().trim();
+        const termo = normalizarTexto(inputBusca?.value);
         const sexo = selectSexo?.value || "";
         const idadeMax = parseInt(inputIdade?.value, 10);
         const soFav = checkFavoritos?.checked || false;
+        const cidadeAlvo = normalizarTexto(cidadeUsuario);
 
         const filtrados = todosGatos.filter(gato => {
             const bateTexto = !termo ||
-                (gato.nome && gato.nome.toLowerCase().includes(termo)) ||
-                (gato.raca && gato.raca.toLowerCase().includes(termo)) ||
-                (gato.cidade && gato.cidade.toLowerCase().includes(termo));
+                normalizarTexto(gato.nome).includes(termo) ||
+                normalizarTexto(gato.raca).includes(termo) ||
+                normalizarTexto(gato.cidade).includes(termo);
 
             const bateSexo = !sexo || gato.sexo === sexo;
             const bateIdade = isNaN(idadeMax) || Number(gato.idade) <= idadeMax;
             const bateFav = !soFav || favoritos.includes(String(gato.id));
+            const bateCidade = !filtrarPorCidade || !cidadeAlvo ||
+                normalizarTexto(gato.cidade) === cidadeAlvo;
 
-            return bateTexto && bateSexo && bateIdade && bateFav;
+            return bateTexto && bateSexo && bateIdade && bateFav && bateCidade;
         });
 
         if (statusEl) {
@@ -180,10 +265,21 @@ document.addEventListener("DOMContentLoaded", () => {
             todosGatos = dados;
             if (statusEl) statusEl.style.display = "none";
             aplicarFiltros();
+            detectarCidadeUsuario(true);
         })
         .catch(() => {
             if (statusEl) statusEl.textContent = "Erro ao carregar os gatinhos.";
         });
+
+    btnLocalizacao?.addEventListener("click", () => {
+        if (cidadeUsuario) {
+            filtrarPorCidade = !filtrarPorCidade;
+            atualizarBannerLocalizacao();
+            aplicarFiltros();
+        } else {
+            detectarCidadeUsuario(false);
+        }
+    });
 
     inputBusca?.addEventListener("input", aplicarFiltros);
     selectSexo?.addEventListener("change", aplicarFiltros);

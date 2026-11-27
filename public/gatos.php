@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -42,9 +43,15 @@
                 <input type="checkbox" id="filtro-favoritos"> Só favoritos ♥
             </label>
         </div>
+
+        <div class="campo">
+            <label for="btn-localizacao">Localização</label>
+            <button type="button" class="botao" id="btn-localizacao">📍 Minha cidade</button>
+        </div>
     </section>
 
-    <p id="status-carregamento" class="status-vitrine">Carregando gatinhos...</p>
+    <p id="status-localizacao" class="subtitulo-form" aria-live="polite"></p>
+    <p id="status-carregamento" class="status-vitrine" aria-live="polite">Carregando gatinhos...</p>
     <div id="lista-gatos" class="lista-gatos"></div>
 </main>
 
