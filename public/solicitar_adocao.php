@@ -14,7 +14,10 @@ $mensagem = trim($_POST['mensagem_adotante'] ?? '');
 $adotanteId = (int) $_SESSION['usuario_id'];
 
 if ($gatoId > 0 && $mensagem !== '') {
-    $model->solicitar($gatoId, $adotanteId, $mensagem);
+    $enviada = $model->solicitar($gatoId, $adotanteId, $mensagem);
+    $parametro = $enviada ? 'sucesso=1' : 'duplicada=1';
+    header("Location: minhas_solicitacoes.php?{$parametro}");
+    exit;
 }
 
 header("Location: minhas_solicitacoes.php");

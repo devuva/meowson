@@ -14,7 +14,6 @@ if (!$gato) {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -22,7 +21,6 @@ if (!$gato) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
     <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 </head>
 <body>
@@ -30,6 +28,8 @@ if (!$gato) {
 <?php require_once __DIR__ . "/../includes/header.php"; ?>
 
 <div class="container">
+    <a href="gatos.php" class="link-voltar">&larr; Voltar para os gatinhos</a>
+
     <h1><?= htmlspecialchars($gato['nome']) ?></h1>
 
     <?php if (!empty($gato['fotos'])): ?>
@@ -62,6 +62,6 @@ if (!$gato) {
         <p><a href="login.html">Faça login como adotante</a> para solicitar a adoção.</p>
     <?php endif; ?>
 </div>
-
+<?php require_once __DIR__ . "/../includes/footer.php"; ?>
 </body>
 </html>

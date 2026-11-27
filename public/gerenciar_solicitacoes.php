@@ -23,8 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $solicitacoes = $model->listarRecebidas((int) $_SESSION['usuario_id']);
-?>
 
+$rotulosStatus = [
+    'pendente'  => 'Pendente',
+    'aprovada'  => 'Aprovada',
+    'recusada'  => 'Recusada',
+    'encerrada' => 'Encerrada',
+];
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -32,7 +38,7 @@ $solicitacoes = $model->listarRecebidas((int) $_SESSION['usuario_id']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 </head>
 <body>
 
@@ -42,15 +48,21 @@ $solicitacoes = $model->listarRecebidas((int) $_SESSION['usuario_id']);
     <h1>Solicitações de Adoção Recebidas</h1>
 
     <?php if (empty($solicitacoes)): ?>
-        <p>Nenhuma solicitação recebida até o momento.</p>
+        <div class="estado-vazio">
+            <p>Nenhuma solicitação recebida até o momento.</p>
+        </div>
     <?php else: ?>
         <?php foreach ($solicitacoes as $s): ?>
+            <?php
+                $st = $s['status'] ?? 'pendente';
+                $textoStatus = $rotulosStatus[$st] ?? ucfirst($st);
+            ?>
             <div class="campo item-solicitacao">
                 <h2>Gato: <?= htmlspecialchars($s['nome_gato']) ?></h2>
                 <p><strong>Candidato:</strong> <?= htmlspecialchars($s['nome_adotante']) ?> (<?= htmlspecialchars($s['cidade']) ?> - <?= htmlspecialchars($s['estado']) ?>)</p>
                 <p><strong>Contato:</strong> <?= htmlspecialchars($s['email_adotante']) ?> | <?= htmlspecialchars($s['telefone_adotante']) ?></p>
                 <p><strong>Mensagem:</strong> <?= htmlspecialchars($s['mensagem_adotante']) ?></p>
-                <p><strong>Status:</strong> <?= htmlspecialchars($s['status']) ?></p>
+                <p><strong>Status:</strong> <span class="tag-status tag-<?= htmlspecialchars($st) ?>"><?= htmlspecialchars($textoStatus) ?></span></p>
 
                 <?php if ($s['status'] === 'pendente'): ?>
                     <div class="acoes">

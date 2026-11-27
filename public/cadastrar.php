@@ -63,33 +63,37 @@ foreach ($endereco as $campo) {
 }
 
 $nomeArquivoDoc = null;
-if ($dados['perfil'] === 'ong') {
-    if (!isset($_FILES['documento']) || $_FILES['documento']['error'] !== UPLOAD_ERR_OK) {
-        $erros[] = "Envie a documentação da ONG!";
-    } else {
-        $extensoesPermitidas = ['pdf', 'jpg', 'jpeg', 'png', 'webp'];
-        $extensao = strtolower(pathinfo($_FILES['documento']['name'], PATHINFO_EXTENSION));
+$pastaDocs = __DIR__ . "/uploads";
 
-        if (!in_array($extensao, $extensoesPermitidas)) {
+if ($dados['perfil'] === 'ong') {
+    if (!isset($_FILES['documento']) || $_FILES['documento']['error'] === UPLOAD_ERR_NO_FILE) {
+        $erros[] = "Envie a documentação da ONG!";
+    } elseif ($_FILES['documento']['error'] !== UPLOAD_ERR_OK) {
+        $erros[] = "Erro no upload do arquivo (código " . $_FILES['documento']['error'] . "). Tente um arquivo de até 2 MB.";
+    } elseif ($_FILES['documento']['size'] > (2 * 1024 * 1024)) {
+        $erros[] = "O documento deve ter no máximo 2 MB.";
+    } else {
+        $leitor = finfo_open(FILEINFO_MIME_TYPE);
+        $tipo = finfo_file($leitor, $_FILES['documento']['tmp_name']);
+        $tiposPermitidos = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'];
+
+        if (!in_array($tipo, $tiposPermitidos)) {
             $erros[] = "Formato inválido! Envie PDF, JPG, PNG ou WEBP.";
-        } elseif ($_FILES['documento']['size'] > 5 * 1024 * 1024) {
-            $erros[] = "O documento deve ter no máximo 5 MB.";
         } else {
-            $pastaDocs = __DIR__ . "/uploads/documentos/";
-            if (!is_dir($pastaDocs)) {
-                mkdir($pastaDocs, 0777, true);
-            }
-            $nomeArquivoDoc = bin2hex(random_bytes(8)) . "." . $extensao;
-            if (!move_uploaded_file($_FILES['documento']['tmp_name'], $pastaDocs . $nomeArquivoDoc)) {
-                $erros[] = "Falha ao salvar o documento da ONG.";
+            $extensao = strtolower(pathinfo($_FILES['documento']['name'], PATHINFO_EXTENSION));
+            $nomeArquivoDoc = "doc_" . bin2hex(random_bytes(8)) . "." . $extensao;
+
+           if (!move_uploaded_file($_FILES['documento']['tmp_name'], $pastaDocs . "/" . $nomeArquivoDoc)) {
+                $erros[] = "Falha ao salvar em: " . $pastaDocs . " | Existe: " . (is_dir($pastaDocs) ? 'sim' : 'não') . " | Gravável: " . (is_writable($pastaDocs) ? 'sim' : 'não');
+                $nomeArquivoDoc = null;
             }
         }
     }
 }
 
 if (!empty($erros)) {
-    if ($nomeArquivoDoc && file_exists(__DIR__ . "/uploads/documentos/" . $nomeArquivoDoc)) {
-        unlink(__DIR__ . "/uploads/documentos/" . $nomeArquivoDoc);
+    if ($nomeArquivoDoc && file_exists($pastaDocs . "/" . $nomeArquivoDoc)) {
+        unlink($pastaDocs . "/" . $nomeArquivoDoc);
     }
     foreach ($erros as $erro) {
         echo $erro . "<br>";
@@ -101,8 +105,8 @@ if (!empty($erros)) {
         header("Location: login.html");
         exit;
     } catch (PDOException $e) {
-        if ($nomeArquivoDoc && file_exists(__DIR__ . "/uploads/documentos/" . $nomeArquivoDoc)) {
-            unlink(__DIR__ . "/uploads/documentos/" . $nomeArquivoDoc);
+        if ($nomeArquivoDoc && file_exists($pastaDocs . "/" . $nomeArquivoDoc)) {
+            unlink($pastaDocs . "/" . $nomeArquivoDoc);
         }
         if ($e->errorInfo[1] === 1062) {
             echo "E-mail ou CPF/CNPJ já cadastrado!";
